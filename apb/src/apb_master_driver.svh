@@ -28,7 +28,7 @@ class apb_master_driver extends uvm_driver #(apb_item);
         main_loop();
         begin
           @(negedge vif.presetn);
-          `uvm_info("APB_MST", "reset asserted: transfer aborted", UVM_MEDIUM)
+          `vip_info("APB_MST", "reset asserted: transfer aborted", UVM_MEDIUM)
         end
       join_any
       disable fork;
@@ -124,7 +124,7 @@ class apb_master_driver extends uvm_driver #(apb_item);
       if (vif.mst_cb.pready === 1'b1) break;
       cycles++;
       if (cycles > cfg.timeout_cycles) begin
-        `uvm_error("APB_TIMEOUT", $sformatf("PREADY not seen within %0d cycles: %s", cfg.timeout_cycles, it.convert2string()))
+        `vip_error("APB_TIMEOUT", $sformatf("PREADY not seen within %0d cycles: %s", cfg.timeout_cycles, it.convert2string()))
         break;
       end
     end

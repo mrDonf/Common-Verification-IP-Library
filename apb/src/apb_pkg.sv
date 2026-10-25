@@ -11,6 +11,7 @@
 `define APB_PKG_SV
 
 `include "uvm_macros.svh"
+`include "vip_macros.svh"
 
 `ifndef APB_ADDR_W
   `define APB_ADDR_W 32

@@ -18,7 +18,7 @@ class apb_item extends uvm_sequence_item;
 
   constraint c_strb_rd   { !write -> strb == '0; }
   constraint c_strb_wr   { write -> strb != '0; }
-  constraint c_align     { soft addr[$clog2(APB_STRB_W)-1:0] == '0; }
+  constraint c_align     { soft (addr % APB_STRB_W) == 0; }
   constraint c_idle      { idle dist { 0 := 60, [1:3] := 30, [4:10] := 10 }; }
   constraint c_prot      { soft prot == 3'b000; }
 
@@ -36,7 +36,7 @@ class apb_item extends uvm_sequence_item;
   virtual function void do_copy(uvm_object rhs);
     apb_item r;
     super.do_copy(rhs);
-    if (!$cast(r, rhs)) `uvm_fatal("APB_ITEM", "do_copy: type mismatch")
+    if (!$cast(r, rhs)) `vip_fatal("APB_ITEM", "do_copy: type mismatch")
     addr = r.addr; write = r.write; data = r.data; strb = r.strb; prot = r.prot; idle = r.idle;
     slverr = r.slverr; wait_cycles = r.wait_cycles; start_time = r.start_time; end_time = r.end_time; aborted = r.aborted;
   endfunction

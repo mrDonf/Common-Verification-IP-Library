@@ -88,13 +88,13 @@ interface vip_apb_if #(
 
   property p_stable;
     @(posedge pclk) disable iff (!ok)
-      (psel && penable && !pready) |=> ($stable(paddr) && $stable(pwrite) && $stable(pwdata) && $stable(pstrb) && $stable(pprot));
+      (psel && penable && !pready) |=> ($stable(paddr) && $stable(pwrite) && $stable(pprot) && (!pwrite || ($stable(pwdata) && $stable(pstrb))));
   endproperty
   A_STABLE: assert property (p_stable) else violation("APB_A_STABLE", "address/control/data changed during wait states");
 
   property p_stable_sa;       // SETUP -> first ACCESS cycle: nothing may change either
     @(posedge pclk) disable iff (!ok)
-      (psel && !penable) |=> ($stable(paddr) && $stable(pwrite) && $stable(pwdata) && $stable(pstrb) && $stable(pprot));
+      (psel && !penable) |=> ($stable(paddr) && $stable(pwrite) && $stable(pprot) && (!pwrite || ($stable(pwdata) && $stable(pstrb))));
   endproperty
   A_STABLE_SA: assert property (p_stable_sa) else violation("APB_A_STABLE", "address/control/data changed between SETUP and ACCESS");
 

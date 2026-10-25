@@ -22,7 +22,7 @@ class apb_env extends uvm_env;
 
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    if (!uvm_config_db #(apb_env_cfg)::get(this, "", "cfg", cfg)) `uvm_fatal("APB_CFG", "no apb_env_cfg")
+    if (!uvm_config_db #(apb_env_cfg)::get(this, "", "cfg", cfg)) `vip_fatal("APB_CFG", "no apb_env_cfg")
     if (cfg.mst_cfg != null) begin
       uvm_config_db #(apb_agent_cfg)::set(this, "mst*", "cfg", cfg.mst_cfg);
       mst = apb_agent::type_id::create("mst", this);

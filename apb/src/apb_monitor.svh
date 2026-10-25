@@ -59,13 +59,13 @@ class apb_monitor extends uvm_monitor;
           if (cur.slverr) n_err++;
           if (cur.idle == 0) n_b2b++;
           t_prev_end = cur.end_time; have_prev = 1;
-          `uvm_info("APB_MON", cur.convert2string(), UVM_HIGH)
+          `vip_info("APB_MON", cur.convert2string(), UVM_HIGH)
           ap.write(cur);
           cur = null;
         end else begin
           waits++;
           if (cfg.checks_en && waits > cfg.timeout_cycles) begin
-            `uvm_error("APB_TIMEOUT", $sformatf("PREADY low for more than %0d cycles", cfg.timeout_cycles))
+            `vip_error("APB_TIMEOUT", $sformatf("PREADY low for more than %0d cycles", cfg.timeout_cycles))
             cur = null;
           end
         end
@@ -76,7 +76,7 @@ class apb_monitor extends uvm_monitor;
   endtask
 
   function void report_phase(uvm_phase phase);
-    `uvm_info("APB_MON", $sformatf("transfers=%0d (wr=%0d rd=%0d) slverr=%0d wait_cycles=%0d protocol_violations=%0d",
+    `vip_info("APB_MON", $sformatf("transfers=%0d (wr=%0d rd=%0d) slverr=%0d wait_cycles=%0d protocol_violations=%0d",
               n_xfer, n_wr, n_rd, n_err, n_wait_cycles, vif.viol_cnt), UVM_LOW)
   endfunction
 endclass : apb_monitor

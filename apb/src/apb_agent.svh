@@ -22,8 +22,8 @@ class apb_agent extends uvm_agent;
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     if (!uvm_config_db #(apb_agent_cfg)::get(this, "", "cfg", cfg))
-      `uvm_fatal("APB_CFG", $sformatf("no apb_agent_cfg for %s (uvm_config_db key \"cfg\")", get_full_name()))
-    if (cfg.vif == null) `uvm_fatal("APB_CFG", "apb_agent_cfg.vif is null")
+      `vip_fatal("APB_CFG", $sformatf("no apb_agent_cfg for %s (uvm_config_db key \"cfg\")", get_full_name()))
+    if (cfg.vif == null) `vip_fatal("APB_CFG", "apb_agent_cfg.vif is null")
     is_active = (cfg.role == VIP_MONITOR) ? UVM_PASSIVE : UVM_ACTIVE;
     cfg.post_randomize_mem();
     mon = apb_monitor::type_id::create("mon", this);

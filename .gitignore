@@ -1,5 +1,21 @@
-
+# allowlist: only the VIP sources, the shared common package and the documentation are published
 /*
 !/.gitignore
+!/README.md
+!/docs/
+!/common/
+
+# per VIP: only src/ (testbenches, vip.json and build outputs stay local)
 !/apb/
-/apb/tb/
+!/ahb/
+!/axi4/
+!/axi5/
+!/axi4s/
+!/uart/
+!/spi/
+!/i2c/
+!/qspi/
+/*/*
+!/*/src/
+!/docs/*
+!/common/*

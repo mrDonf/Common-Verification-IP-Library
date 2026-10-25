@@ -42,11 +42,11 @@ class apb_scoreboard extends uvm_scoreboard;
     if (t.slverr) begin
       n_err_seen++;
       if (cfg != null && !cfg.error_possible(t.addr))
-        `uvm_error("APB_SB_ERR", $sformatf("unexpected PSLVERR: %s", t.convert2string()))
+        `vip_error("APB_SB_ERR", $sformatf("unexpected PSLVERR: %s", t.convert2string()))
       return;
     end
     if (cfg != null && cfg.unmapped_error && !mapped)
-      `uvm_error("APB_SB_ERR", $sformatf("access to an unmapped address answered OKAY: %s", t.convert2string()))
+      `vip_error("APB_SB_ERR", $sformatf("access to an unmapped address answered OKAY: %s", t.convert2string()))
     if (t.write) begin
       ref_mem.write_le(longint'(a_al), t.data, APB_STRB_W, t.strb);
       if (t.strb == {APB_STRB_W{1'b1}}) unknown.delete(a_al);       // a full-word write defines the word again
@@ -57,12 +57,12 @@ class apb_scoreboard extends uvm_scoreboard;
       if (unknown.exists(a_al)) n_skipped++;
       else if (mapped && expd !== t.data) begin
         n_mismatch++;
-        `uvm_error("APB_SB_MISMATCH", $sformatf("read 0x%0h: got 0x%0h expected 0x%0h", t.addr, t.data, expd))
+        `vip_error("APB_SB_MISMATCH", $sformatf("read 0x%0h: got 0x%0h expected 0x%0h", t.addr, t.data, expd))
       end
     end
   endfunction
 
   function void report_phase(uvm_phase phase);
-    `uvm_info("APB_SB", $sformatf("writes=%0d reads checked=%0d mismatches=%0d slverr seen=%0d", n_wr, n_checked, n_mismatch, n_err_seen), UVM_LOW)
+    `vip_info("APB_SB", $sformatf("writes=%0d reads checked=%0d mismatches=%0d slverr seen=%0d", n_wr, n_checked, n_mismatch, n_err_seen), UVM_LOW)
   endfunction
 endclass : apb_scoreboard

@@ -12,7 +12,6 @@ class apb_coverage extends uvm_subscriber #(apb_item);
 
   covergroup cg_xfer;
     option.per_instance = 1;
-    option.name = "apb_xfer";
     cp_dir  : coverpoint it.write { bins read = {0}; bins write = {1}; }
     cp_addr : coverpoint it.addr  {
       bins low   = {[0 : Q1 - 1]};
@@ -20,7 +19,7 @@ class apb_coverage extends uvm_subscriber #(apb_item);
       bins mid2  = {[Q2 : Q3 - 1]};
       bins high  = {[Q3 : $]};
     }
-    cp_align : coverpoint it.addr[$clog2(APB_STRB_W)-1:0] { bins aligned = {0}; bins unaligned = default; }
+    cp_align : coverpoint (it.addr % APB_STRB_W) { bins aligned = {0}; bins unaligned = default; }
     cp_strb  : coverpoint it.strb iff (it.write) {
       bins full = {{APB_STRB_W{1'b1}}};
       bins single_lane[] = {[1:$]} with ($countones(item) == 1);
@@ -39,6 +38,7 @@ class apb_coverage extends uvm_subscriber #(apb_item);
   function new(string name, uvm_component parent);
     super.new(name, parent);
     cg_xfer = new();
+    cg_xfer.set_inst_name({get_full_name(), ".cg_xfer"});
   endfunction
 
   function void write(apb_item t);

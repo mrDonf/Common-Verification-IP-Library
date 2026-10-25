@@ -21,7 +21,7 @@ class apb_reg_adapter extends uvm_reg_adapter;
 
   virtual function void bus2reg(uvm_sequence_item bus_item, ref uvm_reg_bus_op rw);
     apb_item t;
-    if (!$cast(t, bus_item)) `uvm_fatal("APB_ADAPT", "bus_item is not an apb_item")
+    if (!$cast(t, bus_item)) `vip_fatal("APB_ADAPT", "bus_item is not an apb_item")
     rw.kind   = t.write ? UVM_WRITE : UVM_READ;
     rw.addr   = t.addr;
     rw.data   = t.data;
